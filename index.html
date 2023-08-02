@@ -49,43 +49,28 @@
         .game a:hover {
             background-color: #ddd;
         }
-        #loading-screen {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background-color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .loader {
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #3498db;
-            width: 120px;
-            height: 120px;
-            -webkit-animation: spin 2s linear infinite; /* Safari */
-            animation: spin 2s linear infinite;
-        }
-        /* Safari */
-        @-webkit-keyframes spin {
-            0% { -webkit-transform: rotate(0deg); }
-            100% { -webkit-transform: rotate(360deg); }
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @media screen and (max-width: 600px) {
+            .header {
+                padding: 20px;
+            }
+            .header img {
+                width: 100px;
+            }
+            .content {
+                padding: 10px;
+            }
+            .game, .news {
+                padding: 10px;
+            }
+            .game a {
+                padding: 5px 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="loading-screen">
-        <div class="loader"></div>
-    </div>
     <div class="header">
-        <img src="https://raw.githubusercontent.com/largefort/Jafetegill/main/game-logo-url.png" alt="Jump My King Logo">
-
+        <img src="game-logo-url" alt="Jump My King Logo">
         <h1>Jump My King</h1>
         <p>Official Site</p>
     </div>
@@ -96,16 +81,25 @@
             <a href="https://play.google.com/store/apps/details?id=com.jafetegill.jumpmyking" target="_blank">Get it on Google Play</a>
         </div>
         <h2>News Updates</h2>
-        <div class="news">
-            <h3>Update 1.0.2</h3>
-            <p>Changed game resolution for players to immerse themselves in fullscreen and you can now enjoy full view of the game's screen layout.</p>
-        </div>
+        <div class="news"></div>
     </div>
     <script>
-        window.addEventListener('load', function() {
-            var loadingScreen = document.getElementById('loading-screen');
-            loadingScreen.style.display = 'none';
-        });
+        fetch('https://api.example.com/game-updates')
+            .then(response => response.json())
+            .then(data => {
+                var newsSection = document.querySelector('.news');
+                data.forEach(update => {
+                    var updateDiv = document.createElement('div');
+                    var updateTitle = document.createElement('h3');
+                    var updateDetails = document.createElement('p');
+                    updateTitle.textContent = update.title;
+                    updateDetails.textContent = update.details;
+                    updateDiv.appendChild(updateTitle);
+                    updateDiv.appendChild(updateDetails);
+                    newsSection.appendChild(updateDiv);
+                });
+            })
+            .catch(error => console.error('Error:', error));
     </script>
 </body>
 </html>
